@@ -21,17 +21,28 @@ const handleClickImgGallery = event => {
 		return;
 	}
 
-	const modalWindow = basicLightbox.create(`
+	const modalWindow = basicLightbox.create(
+		`
   <img class="gallery__image" src="${event.target.dataset.source}" alt="${event.target.alt}"/>
-`);
+`,
+		{
+			onShow: modalWindow => {
+				document.addEventListener("keydown", handleModalWindowEsc);
+			},
+			onClose: modalWindow => {
+				document.removeEventListener("keydown", handleModalWindowEsc);
+			},
+		},
+	);
 	modalWindow.show();
 
-	document.addEventListener("keydown", handleModalWindowEsc);
+	// document.addEventListener("keydown", handleModalWindowEsc);
 
 	function handleModalWindowEsc(event) {
+		// console.log(event.code);
 		if (event.code === "Escape") {
 			modalWindow.close();
-			document.removeEventListener("keydown", handleModalWindowEsc);
+			// document.removeEventListener("keydown", handleModalWindowEsc);
 		}
 	}
 };
